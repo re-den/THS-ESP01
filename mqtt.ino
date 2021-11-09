@@ -37,7 +37,7 @@ void subscribeclient() {
     Serial.println(" - ERROR");
   }
 
-  if (client.publish(hellotopic, "hello from ESP8266")) {
+  if (client.publish(hellotopic, "hello from ESP01")) {
     Serial.println("Start publish ok");
   }
   else {

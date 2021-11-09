@@ -1,3 +1,12 @@
+// раздефайнить или задефайнить для использования
+//#define DEBUG_ENABLE
+
+#ifdef DEBUG_ENABLE
+#define DEBUG(x) Serial.println(x)
+#else
+#define DEBUG(x)
+#endif
+
 #include <MQTT.h>
 #include <PubSubClient.h>
 #include <PubSubClient_JSON.h>
@@ -51,8 +60,9 @@ GKalman tempFilter(0.2, 0.2, 0.1);
 GKalman humiFilter(2, 2, 1);
 
 void setup() {
-  Serial.begin(115200);
-
+  #ifdef DEBUG_ENABLE
+    Serial.begin(115200);
+  #endif
   Serial.println();
   Serial.println();
   Serial.println("Start system!");
