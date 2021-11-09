@@ -12,7 +12,7 @@
 bool debug = false;  //Отображение отладочной информации в серийный порт
 
 #define DHTPIN 0             // Пин подключения датчика влажности и температуры
-#define RELAYPIN 1          // Пин подключения реле
+#define RELAYPIN 2          // Пин подключения реле
 #define DHTTYPE DHT22         // DHT 22  (AM2302) Тип датчика влажности
 #define REPORT_INTERVAL 30000 // Интервал отправки данных брокеру
 #define BUFFER_SIZE 200       // Размер буфера для получения сообщения 
@@ -21,7 +21,7 @@ const char* ssid = "Password";        //Имя WIFI сети
 const char* password = "bdcPVN5786";  //Пароль WIFI
 const char* device1 = "Switch1";      //Имя управляемого устройства №1
 
-String topic = "/sensors/dht";                   //Топик для отправки
+String topic = "/sensors/dht1";                   //Топик для отправки
 String debug_topic = "/debug";        //Топик отладочной информации
 String sub_topic = "/homebridge/to/set"; //Топик подписки
 char* hellotopic = "/hello_topic";       //Топик приветствия
