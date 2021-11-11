@@ -1,5 +1,5 @@
 // раздефайнить или задефайнить для использования
-//#define DEBUG_ENABLE
+#define DEBUG_ENABLE
 
 #ifdef DEBUG_ENABLE
 #define DEBUG(x) Serial.println(x)
@@ -28,7 +28,7 @@ bool debug = false;  //Отображение отладочной информ�
 
 const char* ssid = "Password";        //Имя WIFI сети
 const char* password = "bdcPVN5786";  //Пароль WIFI
-const char* device1 = "Switch1";      //Имя управляемого устройства №1
+const char* device1 = "Switch01";      //Имя управляемого устройства №1
 
 String topic = "/sensors/dht1";                   //Топик для отправки
 String debug_topic = "/debug";        //Топик отладочной информации
@@ -136,8 +136,8 @@ void sendTemperature() {
     return;
   }
 
-  filteredT = round(tempFilter.filtered(t) * 100) / 100;
-  filteredH = round(humiFilter.filtered(h) * 100) / 100;
+  filteredT = round(tempFilter.filtered(t) * 10) / 10;
+  filteredH = round(humiFilter.filtered(h) * 10) / 10;
 
   String payload = "{\"id\":\"";
   payload += clientName;
@@ -219,6 +219,7 @@ void callback(const MQTT::Publish & pub) {
 
       if (strcmp (device_name, device1) == 0) {
         debug = value;
+        digitalWrite(RELAYPIN,((value == true) ? LOW : HIGH));
         Serial.println((value == true) ? "ОТЛАДКА ВКЛЮЧЕНА" : "ОТЛАДКА ОТКЛЮЧЕНА");
       }
     }
