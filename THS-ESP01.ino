@@ -32,7 +32,7 @@ const char* device1 = "Switch01";      //Имя управляемого уст�
 
 String topic = "/sensors/dht1";                   //Топик для отправки
 String debug_topic = "/debug";        //Топик отладочной информации
-String sub_topic = "/homebridge/to/set"; //Топик подписки
+String sub_topic = "/switch01"; //Топик подписки
 char* hellotopic = "/hello_topic";       //Топик приветствия
 char message_buff[2048];                //Размер буфера для принятого сообщения
 
@@ -49,7 +49,9 @@ float h, filteredH;          //Значение влажности
 float t, filteredT;          //Значение температуры
 float oldH;        //Предыдущее значение влажности
 float oldT;        //Предыдущее значение температуры
+bool switchState = true; //Состояние реле
 String clientName;  //Имя клиента
+String swStateStr ="1";
 //========================================================================
 
 DHT dht(DHTPIN, DHTTYPE);
@@ -147,6 +149,8 @@ void sendTemperature() {
   payload += filteredH;
   payload += "\",\"temp\":\"";
   payload += filteredT;
+  payload += "\",\"swst\":\"";  
+  payload += swStateStr;
   payload += "\"}";
   
     Serial.print("OLD T: ");
@@ -195,12 +199,26 @@ String uptime() {
 }
 
 void callback(const MQTT::Publish & pub) {
-
+bool value;
 
   String payload = pub.payload_string();
   if (payload != "") {
-    if (String(pub.topic()) == sub_topic) {
+    if (payload == "0"){
+      switchState = true;
+      swStateStr = "0";
+      Serial.println("0");
+    }
+    if (payload == "1"){
+      switchState = false;
+      swStateStr = "1";
+      Serial.println("1");
+    }
+  
 
+        digitalWrite(RELAYPIN,((switchState==true) ? HIGH : LOW));
+        Serial.println((switchState==true) ? "НАГРУЗКА отключена" : "НАГРУЗКА включена");
+        sendTemperature();
+/*
       DynamicJsonDocument doc(2048);
 
       DeserializationError error = deserializeJson(doc, payload);
@@ -221,8 +239,8 @@ void callback(const MQTT::Publish & pub) {
         debug = value;
         digitalWrite(RELAYPIN,((value == true) ? LOW : HIGH));
         Serial.println((value == true) ? "ОТЛАДКА ВКЛЮЧЕНА" : "ОТЛАДКА ОТКЛЮЧЕНА");
-      }
-    }
+      }*/
+    
   }
   else
   {
@@ -230,6 +248,7 @@ void callback(const MQTT::Publish & pub) {
       Serial.println("Empty payload");
   }
 }
+
 
 String macToStr(const uint8_t* mac){
   String result;
