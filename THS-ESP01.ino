@@ -18,22 +18,22 @@
 
 //------------------------------------------------------------------------
 
-bool debug = false;  //Отображение отладочной информации в серийный порт
+bool debug = false;                     //Отображение отладочной информации в серийный порт
 
-#define DHTPIN 0             // Пин подключения датчика влажности и температуры
-#define RELAYPIN 2          // Пин подключения реле
-#define DHTTYPE DHT22         // DHT 22  (AM2302) Тип датчика влажности
-#define REPORT_INTERVAL 30000 // Интервал отправки данных брокеру
-#define BUFFER_SIZE 200       // Размер буфера для получения сообщения 
+#define DHTPIN 0                        // Пин подключения датчика влажности и температуры
+#define RELAYPIN 2                      // Пин подключения реле
+#define DHTTYPE DHT22                   // DHT 22  (AM2302) Тип датчика влажности
+#define REPORT_INTERVAL 30000           // Интервал отправки данных брокеру
+#define BUFFER_SIZE 200                 // Размер буфера для получения сообщения 
 
-const char* ssid = "Password";        //Имя WIFI сети
-const char* password = "bdcPVN5786";  //Пароль WIFI
-const char* device1 = "Switch01";      //Имя управляемого устройства №1
+const char* ssid = "Password";          //Имя WIFI сети
+const char* password = "bdcPVN5786";    //Пароль WIFI
+const char* device1 = "Switch01";       //Имя управляемого устройства №1
 
-String topic = "/sensors/dht1";                   //Топик для отправки
-String debug_topic = "/debug";        //Топик отладочной информации
-String sub_topic = "/switch01"; //Топик подписки
-char* hellotopic = "/hello_topic";       //Топик приветствия
+String topic = "/sensors/dht1";         //Топик для отправки
+String debug_topic = "/debug";          //Топик отладочной информации
+String sub_topic = "/switch01";         //Топик подписки
+char* hellotopic = "/hello_topic";      //Топик приветствия
 char message_buff[2048];                //Размер буфера для принятого сообщения
 
 IPAddress mqtt_server(192, 168, 1, 31);     //Первый сервер MQTT
@@ -41,9 +41,9 @@ IPAddress mqtt_server2(95, 174, 107, 100);  //Второй сервер MQTT
 char mqttServerName[] = "iot.eff-t.ru";
 int mqtt_port = 1883;                       //Порт MQTT сервера
 
-unsigned long currentTime;    //Переменная для преобразования времени работы модуля
+unsigned long currentTime;              //Переменная для преобразования времени работы модуля
 unsigned long currentUtimeReport;
-int err_conn = 0;             //Счетчик ошибок подключения к MQTT серверу
+int err_conn = 0;                       //Счетчик ошибок подключения к MQTT серверу
 
 float h, filteredH;          //Значение влажности
 float t, filteredT;          //Значение температуры
